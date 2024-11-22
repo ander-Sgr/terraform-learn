@@ -1,27 +1,11 @@
-variable "instance_type" {
-  type        = string # there, bool, number, list, map, set, string, tuple
-  description = "Instance type"
-  default     = "c5.large"
+resource "aws_vpc" "myvpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+      Nmame = "youtube-vpc"
+  }
 }
 
-data "aws_region" "current" {
-  
-}
-
-resource "aws_instance" "web" {
-  ami           = "ami-Oc55b159cbfafe188"
-  instance_type = "t2.micro"
-}
-
-resource "aws_instance" "web1" {
-  ami           = "ami-Oc55b159cbfafe145"
-  instance_type = var.instance_type
-}
-
-output "region" {
-  value = data.aws_region.current.name
-}
-
-output "web_id" {
-  value = aws_instance.web.arn
+resource "aws_vpc" "myvpc_dr" {
+  provider   = aws.europe
+  cidr_block = "172.16.0.0/16"
 }
